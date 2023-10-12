@@ -1,6 +1,6 @@
 import pygame
 import sys
- 
+#ohagos
 # Defina as constantes
 WIDTH, HEIGHT = 800, 800
 ROWS, COLS = 8, 8
