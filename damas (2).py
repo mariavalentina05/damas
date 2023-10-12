@@ -1,6 +1,6 @@
 import pygame
 import sys
-#ohagos
+ 
 # Defina as constantes
 WIDTH, HEIGHT = 800, 800
 ROWS, COLS = 8, 8
@@ -62,7 +62,7 @@ class Board:
         for i in range (8): #i = y
             for j in range (8): # j= y 
                 cor= WHITE if (i+j)%2==0 else BLACK
-                pygame.draw.rect(win,cor, (j*width, i*width, width, width))
+                pygame.draw.rect(win,cor, (i*width, j*width, width, width))
 
     def draw_pieces(self, win):
         pass  # Implemente a lógica para desenhar as peças no tabuleiro aqui
@@ -83,6 +83,7 @@ class Board:
  
     def is_valid_move(self, piece, row, col):
         pass  # Implemente a lógica para verificar se um movimento é válido aqui
+        
  
     def remove(self, piece):
         pass  # Implemente a lógica para remover uma peça do tabuleiro aqui
@@ -112,24 +113,29 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             #faria um while pra esperar até o cara selecionar uma peça dele que pode jogar
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                col = event.pos[0] // SQUARE_SIZE
-                row = event.pos[1] // SQUARE_SIZE,
+
+            if selected_piece == None and event.type == pygame.MOUSEBUTTONDOWN:
+                row = event.pos[0] // SQUARE_SIZE
+                col = event.pos[1] // SQUARE_SIZE
                 #busca em board.board alguma peça com essas posições
-            #     pieceTemp = board.board[col][row]
-            #     if pieceTemp != None and pieceTemp.color == playerAtualColor:
-            #         selected_piece = pieceTemp
-            #     #jogar pra selectedPiece a peca selecioanda com o mause
-            #     # Implemente a lógica de seleção de peça aqui
-            # if selected_piece != None:
-            #     # Implemente a lógica de movimentação da peça aqui
-            #     selected_piece.move(1,1)
-            #     movimentoRealizado = True
-            # if movimentoRealizado:
-            #     selected_piece = None
-            #     board.is_winner(playerAtualColor)
-            #     playerAtualColor = BLUE if playerAtualColor == RED else RED
-        
+                pieceTemp = board.board[col][row]
+                if pieceTemp != None and pieceTemp.color == playerAtualColor:
+                    selected_piece = pieceTemp
+                #jogar pra selectedPiece a peca selecioanda com o mause
+                # Implemente a lógica de seleção de peça aqui
+            elif selected_piece != None:
+                # Implemente a lógica de movimentação da peça aqui
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    row = event.pos[0] // SQUARE_SIZE
+                    col = event.pos[1] // SQUARE_SIZE
+                    board.move(selected_piece,col,row)
+                    movimentoRealizado = True
+            if movimentoRealizado:
+                selected_piece = None
+                board.is_winner(playerAtualColor)
+                playerAtualColor = BLUE if playerAtualColor == RED else RED
+                movimentoRealizado = False
+
         win.fill(WHITE)
         board.draw_squares(win)
         board.draw_pieces(win)
